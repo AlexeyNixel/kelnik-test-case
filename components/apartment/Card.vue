@@ -1,7 +1,11 @@
 <template>
   <NuxtLink to="/" class="apartment-card">
     <div class="apartment-card__preview">
-      <img :src="apartment.preview" :alt="`Планировка ${apartment.name}`" />
+      <img
+        :src="apartment.preview"
+        :alt="`Планировка ${apartment.name}`"
+        loading="lazy"
+      />
     </div>
     <div class="apartment-card__name">{{ apartment.name }}</div>
     <div class="apartment-card__area">{{ apartment.area }} м²</div>
@@ -11,7 +15,7 @@
       <span>{{ apartment.maxFloor }}</span>
     </div>
     <div class="apartment-card__price">
-      {{ useFormatPrice(apartment.price) }}
+      {{ formattedPrice }}
     </div>
   </NuxtLink>
 </template>
@@ -21,7 +25,9 @@ interface Props {
   apartment: Apartment;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const formattedPrice = useFormatPrice(props.apartment.price);
 </script>
 
 <style lang="scss" scoped>
@@ -74,11 +80,6 @@ defineProps<Props>();
   &__price {
     grid-area: price;
     font-weight: bold;
-  }
-}
-
-@media (min-width: 960px) {
-  .apartment-card {
   }
 }
 

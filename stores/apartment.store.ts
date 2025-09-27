@@ -4,9 +4,9 @@ export interface Apartment {
   area: string;
   floor: number;
   maxFloor: number;
+  rooms: number;
   price: number;
   preview: string;
-  rooms: string;
 }
 
 export interface ApartmentResponse {
@@ -35,15 +35,11 @@ export const useApartmentStore = defineStore('apartment', () => {
 
   //getters
   const getSortApartments = computed(() => {
-    return [...apartments.value].sort((a, b) => {
-      let aValue: any = a[sortField.value];
-      let bValue: any = b[sortField.value];
+    return apartments.value.slice().sort((a, b) => {
+      const aValue = a[sortField.value] as number;
+      const bValue = b[sortField.value] as number;
 
-      if (sortOrder.value === 'asc') {
-        return aValue - bValue;
-      } else {
-        return bValue - aValue;
-      }
+      return sortOrder.value === 'asc' ? aValue - bValue : bValue - aValue;
     });
   });
 
@@ -60,7 +56,6 @@ export const useApartmentStore = defineStore('apartment', () => {
     filters.area = { min: 0, max: 300 };
     filters.rooms = undefined;
     offset.value = 0;
-    fetchApartments();
   };
 
   const fetchApartments = async () => {
@@ -96,8 +91,6 @@ export const useApartmentStore = defineStore('apartment', () => {
   watch(
     filters,
     () => {
-      console.log(filters);
-
       setFilters();
     },
     { deep: true }
