@@ -1,0 +1,30 @@
+:root {
+  --font-family: 'RootUI', sans-serif;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+}
+
+@font-face {
+  font-family: 'RootUI';
+  src: url('/assets/fonts/pt-root-ui_regular.woff2') format(woff2);
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'RootUI';
+  src: url('/assets/fonts/pt-root-ui_bold.woff2') format(woff2);
+  font-weight: 700;
+  font-display: swap;
+}
+
+* {
+  font-family: 'RootUI';
+  font-weight: 400;
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
