@@ -1,28 +1,40 @@
 <template>
-  <div class="range">
-    <h3 class="range__title">{{ lable }}</h3>
-    <div class="range__output-data">
+  <section class="range" aria-labelledby="range-title">
+    <h3 id="range-title" class="range__title">{{ label }}</h3>
+
+    <div class="range__output-data" role="status" aria-live="polite">
       <div class="range__price-value">
         <span class="range__label">от</span>
-        <span class="range__price-number">
-          {{ useFormatPrice(prices[0]) }}
-        </span>
+        <output
+          class="range__price-number"
+          for="range-min"
+          :aria-label="`Минимальная цена: ${formattedMinPrice}`"
+        >
+          {{ formattedMinPrice }}
+        </output>
       </div>
       <div class="range__price-value">
         <span class="range__label">до</span>
-        <span class="range__price-number">
-          {{ useFormatPrice(prices[1]) }}
-        </span>
+        <output
+          class="range__price-number"
+          for="range-max"
+          :aria-label="`Максимальная цена: ${formattedMaxPrice}`"
+        >
+          {{ formattedMaxPrice }}
+        </output>
       </div>
     </div>
 
-    <USlider
-      :min="min"
-      :max="max"
-      v-model="prices"
-      @update:model-value="handleUpdate"
-    />
-  </div>
+    <div class="range__slider-wrapper">
+      <USlider
+        :min="min"
+        :max="max"
+        v-model="arrData"
+        @update:model-value="handleUpdate"
+        aria-labelledby="range-title"
+      />
+    </div>
+  </section>
 </template>
 
 <script lang="ts" setup>
@@ -30,11 +42,14 @@ interface Props {
   min: number;
   max: number;
   modelValue: number[];
-  lable?: string;
+  label?: string;
 }
 
 const props = defineProps<Props>();
-const prices = ref(props.modelValue);
+const arrData = ref(props.modelValue);
+
+const formattedMinPrice = computed(() => useFormatPrice(props.modelValue[0]));
+const formattedMaxPrice = computed(() => useFormatPrice(props.modelValue[1]));
 
 const emit = defineEmits<{
   'update:modelValue': [value: number[]];
@@ -48,9 +63,7 @@ const handleUpdate = (value: number[] | undefined) => {
 
 watch(
   props,
-  () => {
-    prices.value = props.modelValue;
-  },
+  useDebounce(() => (arrData.value = props.modelValue), 500),
   {
     deep: true,
   }

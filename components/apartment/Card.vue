@@ -16,7 +16,7 @@
     </div>
     <div class="apartment-card__price">
       {{ formattedPrice }}
-    </div>
+    </div>a
   </NuxtLink>
 </template>
 
@@ -27,7 +27,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const formattedPrice = useFormatPrice(props.apartment.price);
+const formattedPrice = computed(() => useFormatPrice(props.apartment.price));
 </script>
 
 <style lang="scss" scoped>

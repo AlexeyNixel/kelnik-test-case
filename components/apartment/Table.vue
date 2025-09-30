@@ -5,7 +5,11 @@
       v-for="apartment in apartmentStore.getSortApartments"
       :apartment="apartment"
       :key="apartment.id"
+      v-if="apartmentStore.getSortApartments.length > 0"
     />
+    <div class="apartment-not-found" v-else-if="!apartmentStore.isLoading">
+      Квартиры не найдены
+    </div>
   </div>
 </template>
 
@@ -18,6 +22,12 @@ const apartmentStore = useApartmentStore();
   display: flex;
   flex-direction: column;
   gap: 4px;
+
+  .apartment-not-found {
+    font-weight: 700;
+    font-size: 24px;
+    padding: 16px 0;
+  }
 }
 
 @media (min-width: 1440px) {

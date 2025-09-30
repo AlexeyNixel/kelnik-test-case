@@ -24,14 +24,14 @@
       :min="limits.price.min"
       :max="limits.price.max"
       v-model="apartmentStore.filters.price"
-      lable="Стоимость квартиры, ₽"
+      label="Стоимость квартиры, ₽"
     />
 
     <ui-custom-range
       :min="limits.area.min"
       :max="limits.area.max"
       v-model="apartmentStore.filters.area"
-      lable="Площадь, м²"
+      label="Площадь, м²"
     />
     <div @click="apartmentStore.resetFilters()" class="apartment-filter__clear">
       <span>Сбросить параметры</span>
