@@ -5,84 +5,54 @@
       <div class="range__price-value">
         <span class="range__label">от</span>
         <span class="range__price-number">
-          {{ useFormatPrice(minPrice) }}
+          {{ useFormatPrice(prices[0]) }}
         </span>
       </div>
       <div class="range__price-value">
         <span class="range__label">до</span>
         <span class="range__price-number">
-          {{ useFormatPrice(maxPrice) }}
+          {{ useFormatPrice(prices[1]) }}
         </span>
       </div>
     </div>
 
-    <client-only>
-      <VueDoubleRangeInput
-        :min="min"
-        :max="max"
-        v-model:minValue="minPrice"
-        v-model:maxValue="maxPrice"
-        @update:minValue="handleMinUpdate"
-        @update:maxValue="handleMaxUpdate"
-        :show-numbers="false"
-        color="#3EB57C"
-        handler-color="#3EB57C"
-        track-height="3px"
-        handler-radius="14px"
-      />
-    </client-only>
+    <USlider
+      :min="min"
+      :max="max"
+      v-model="prices"
+      @update:model-value="handleUpdate"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-//@ts-ignore
-import VueDoubleRangeInput from 'vue-double-range-input';
-import 'vue-double-range-input/dist/style.css';
-
 interface Props {
   min: number;
   max: number;
-  minValue?: number;
-  maxValue?: number;
+  modelValue: number[];
   lable?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  minValue: 0,
-  maxValue: 100000,
-});
-
-const minPrice = ref(props.minValue as number);
-const maxPrice = ref(props.maxValue as number);
+const props = defineProps<Props>();
+const prices = ref(props.modelValue);
 
 const emit = defineEmits<{
-  'update:minValue': [value: number];
-  'update:maxValue': [value: number];
+  'update:modelValue': [value: number[]];
 }>();
 
-const handleMinUpdate = (value: string | number) => {
-  const numValue = typeof value === 'string' ? Number(value) : value;
-  minPrice.value = numValue;
-  emit('update:minValue', numValue);
-};
-
-const handleMaxUpdate = (value: string | number) => {
-  const numValue = typeof value === 'string' ? Number(value) : value;
-  maxPrice.value = numValue;
-  emit('update:maxValue', numValue);
-};
-
-watch(
-  () => props.minValue,
-  (newValue) => {
-    minPrice.value = newValue;
+const handleUpdate = (value: number[] | undefined) => {
+  if (value) {
+    emit('update:modelValue', value);
   }
-);
+};
 
 watch(
-  () => props.maxValue,
-  (newValue) => {
-    maxPrice.value = newValue;
+  props,
+  () => {
+    prices.value = props.modelValue;
+  },
+  {
+    deep: true,
   }
 );
 </script>

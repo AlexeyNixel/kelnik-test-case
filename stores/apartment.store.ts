@@ -28,8 +28,8 @@ export const useApartmentStore = defineStore('apartment', () => {
   const sortField = ref<'area' | 'floor' | 'price'>('area');
 
   const filters = reactive({
-    price: { min: 0, max: 10000000 },
-    area: { min: 0, max: 300 },
+    price: [0, 10000000],
+    area: [0, 300],
     rooms: undefined as number | undefined,
   });
 
@@ -52,8 +52,8 @@ export const useApartmentStore = defineStore('apartment', () => {
   };
 
   const resetFilters = () => {
-    filters.price = { min: 0, max: 10000000 };
-    filters.area = { min: 0, max: 300 };
+    filters.price = [0, 10000000];
+    filters.area = [0, 300];
     filters.rooms = undefined;
     offset.value = 0;
   };
@@ -67,10 +67,10 @@ export const useApartmentStore = defineStore('apartment', () => {
       const res = await $fetch('/api/apartments', {
         query: {
           offset: offset.value,
-          min_price: filters.price.min,
-          max_price: filters.price.max,
-          min_area: filters.area.min,
-          max_area: filters.area.max,
+          min_price: filters.price[0],
+          max_price: filters.price[1],
+          min_area: filters.area[0],
+          max_area: filters.area[1],
           rooms: filters.rooms,
         },
       });
@@ -90,9 +90,7 @@ export const useApartmentStore = defineStore('apartment', () => {
 
   watch(
     filters,
-    () => {
-      setFilters();
-    },
+    useDebounce(() => setFilters(), 500),
     { deep: true }
   );
 

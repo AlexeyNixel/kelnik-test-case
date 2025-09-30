@@ -1,3 +1,6 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
 :root {
   --font-family: 'RootUI', sans-serif;
   --font-weight-normal: 400;

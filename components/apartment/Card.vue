@@ -73,6 +73,10 @@ const formattedPrice = useFormatPrice(props.apartment.price);
     grid-area: floor;
   }
 
+  &__floor span:nth-child(1) {
+    font-weight: 700;
+  }
+
   &__floor span:nth-child(2) {
     margin: 0 4px;
   }
