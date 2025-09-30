@@ -92,7 +92,8 @@ const formattedPrice = useFormatPrice(props.apartment.price);
     grid-template-columns: 120px 120px 120px 120px 120px;
     grid-template-rows: none;
     gap: 20px;
-    padding: 16px 24px;
+    padding: 16px 0 24px 0;
+
     border: 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 0;
